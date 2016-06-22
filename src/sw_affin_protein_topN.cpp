@@ -293,7 +293,7 @@ void SW(void) {
 
   /////////////////////////my part//////////////////////////////////////
   
-  int length, gap=0, similarity=0, identity=0, tempi,tempj, qstart = i, dbstart = j;
+  int length, gap=0, identity=0, tempi,tempj, qstart = i, dbstart = j;
 
 
   tempj = j; tempi = i;
@@ -323,7 +323,7 @@ void SW(void) {
 
   //printf("score = %.2lf\nlength = %d\nidentity =  %d\ngap = %d\nqstart = %d, qend = %d\ndbstart = %d, dbend = %d\n", mymax, length, identity, gap, qstart+1, myi, dbstart+1, myj);
 
-  sprintf(output_str,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,dbstart+1,myj,mymax);
+  sprintf(output_str,"%lu\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,dbstart+1,myj,mymax);
   ////////// end of my part ///////////////////////////////////////
   
   if(i < j) {
@@ -337,7 +337,7 @@ void SW(void) {
 int main(int argc, char **argv)
 {
   FILE *f, *fw;
-  int total_db,i,j, n,k, l;
+  int total_db,i,j, n,k, l, fscanf_result;
   int temp_length;
   char name[LINE_LEN], qry_name[LINE_LEN], dummy[1024], temp_freq_threshold[64];
   char *check_fgets;
@@ -359,10 +359,11 @@ int main(int argc, char **argv)
 
   ////////////////////////////////////////////////////
   f = fopen(db_id_file, "r");
-  fscanf(f,"%d %d",&THRESHOLD_FREQ, &TOP_FREQ);
-  fscanf(f,"%s",dummy);
-  fscanf(f,"%s %s %s", inputfile2, inputfile1, dummy);
-  fscanf(f,"%d %d %d %d %d", &TOTAL_DB_SEQ, &TOTAL_QRY_SEQ, &LINE_LEN, &SIZE_SEQ, &SIZE_SEQ_NAME);
+  fscanf_result = fscanf(f,"%d %d",&THRESHOLD_FREQ, &TOP_FREQ);
+  fscanf_result = fscanf(f,"%s",dummy);
+  fscanf_result = fscanf(f,"%s %s %s", inputfile2, inputfile1, dummy);
+  fscanf_result = fscanf(f,"%d %d %d %d %d", &TOTAL_DB_SEQ, &TOTAL_QRY_SEQ, &LINE_LEN, &SIZE_SEQ, &SIZE_SEQ_NAME);
+  fscanf_result++;
   fclose(f);
 
   ////////////////////////////////////////////////////////
@@ -406,12 +407,12 @@ int main(int argc, char **argv)
 
   f = fopen(db_id_file, "r");
   assert(f);
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
 
-  while(fgets(name,LINE_LEN,f)!=NULL)
+  while ((check_fgets = fgets(name,LINE_LEN,f)) != NULL)
     {
         l = 0;
         while(l<TOP_FREQ){
@@ -419,7 +420,8 @@ int main(int argc, char **argv)
                 match[INDEX(i,l)] = j;
                 freq[INDEX(i,l)] = k;
                 l++;
-                if (l<TOP_FREQ) fgets(name,LINE_LEN,f);
+                if (l<TOP_FREQ) 
+			check_fgets = fgets(name,LINE_LEN,f);
         }
     }
 

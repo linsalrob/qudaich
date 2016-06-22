@@ -123,9 +123,9 @@ void initialization(void)
 void convert_similar_seq()
 {
   int i;
-  for (i = 0; i<strlen(QRY);i++)
+  for (i = 0; i < (int) strlen(QRY);i++)
         QRY[i] = convertStr[QRY[i]];
-  for(i = 0; i<strlen(DB);i++)
+  for(i = 0; i < (int) strlen(DB);i++)
         DB[i] = convertStr[DB[i]];
 }
 
@@ -364,9 +364,9 @@ void SW(int flag_for_rev) {
 
   //printf("score = %.2lf\nlength = %d\nidentity =  %d\ngap = %d\nqstart = %d, qend = %d\ndbstart = %d, dbend = %d\n", mymax, length, identity, gap, qstart+1, myi, dbstart+1, myj);
   if (flag_for_rev>=0)
-  	sprintf(output_str,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,dbstart+1,myj,mymax);
+  	sprintf(output_str,"%lu\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,dbstart+1,myj,mymax);
   else
-	sprintf(output_str,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,strlen(DB)-(dbstart+1)+1,strlen(DB)-myj+1,mymax);
+	sprintf(output_str,"%lu\t%d\t%d\t%d\t%d\t%d\t%lu\t%lu\t%.2lf" ,strlen(QRY),identity,length,gap,qstart+1,myi,strlen(DB)-(dbstart+1)+1,strlen(DB)-myj+1,mymax);
   ////////// end of my part ///////////////////////////////////////
   
   if(i < j) {
@@ -381,7 +381,7 @@ int main(int argc, char **argv)
 {
   FILE *f, *fw;
   int total_db,i,j, n,k;
-  int *match, *freq, temp_length;
+  int *match, *freq, temp_length, fscanf_result;
   char name[LINE_LEN], qry_name[LINE_LEN], dummy[1024], temp_freq_threshold[64];
   char *check_fgets;
 
@@ -402,10 +402,11 @@ int main(int argc, char **argv)
 
   ////////////////////////////////////////////////////
   f = fopen(db_id_file, "r");
-  fscanf(f,"%d %d",&THRESHOLD_FREQ, &TOP_FREQ);
-  fscanf(f,"%s",dummy);
-  fscanf(f,"%s %s %s", inputfile2, inputfile1, dummy);
-  fscanf(f,"%d %d %d %d %d", &TOTAL_DB_SEQ, &TOTAL_QRY_SEQ, &LINE_LEN, &SIZE_SEQ, &SIZE_SEQ_NAME);
+  fscanf_result = fscanf(f,"%d %d",&THRESHOLD_FREQ, &TOP_FREQ);
+  fscanf_result = fscanf(f,"%s",dummy);
+  fscanf_result = fscanf(f,"%s %s %s", inputfile2, inputfile1, dummy);
+  fscanf_result = fscanf(f,"%d %d %d %d %d", &TOTAL_DB_SEQ, &TOTAL_QRY_SEQ, &LINE_LEN, &SIZE_SEQ, &SIZE_SEQ_NAME);
+  fscanf_result++;
   fclose(f);
 
   ////////////////////////////////////////////////////////
@@ -448,11 +449,11 @@ int main(int argc, char **argv)
   f = fopen(db_id_file, "r");
   assert(f);
 
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
-  fgets(name,LINE_LEN,f);
-  while(fgets(name,LINE_LEN,f)!=NULL)
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  check_fgets = fgets(name,LINE_LEN,f);
+  while ((check_fgets = fgets(name,LINE_LEN,f)) != NULL)
     {
       sscanf(name, "%d\t%d\t%d",&i,&j, &k);
       j = j/2;
