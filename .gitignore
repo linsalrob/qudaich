@@ -27,3 +27,7 @@
 *.exe
 *.out
 *.app
+bin/
+
+# An old version ... you should not see this
+v1
