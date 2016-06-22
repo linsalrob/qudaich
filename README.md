@@ -1,5 +1,4 @@
-INTRODUCTION
-============
+# INTRODUCTION
 
 Qudaich (queries and unique database alignment inferred by clustering homologs) is a software package for aligning sequences. Qudaich generates the pairwise local alignments between a query dataset against a database. The main design purpose of qudaich is to focus on datasets from next generation sequencing. These datasets generally have hundreds of thousand sequences or more, and the input database will likely contain a large number of sequences. Qudaich is flexible and its algorithmic structure imposes no restriction on the absolute limit of the acceptable read length, but the current version of qudaich allows read lengths &lt;2000 bp. Qudaich can be used to align DNA, translated DNA and protein sequences.
 
@@ -11,29 +10,28 @@ Qudaich performs local sequence alignments in two steps:
 Qudaich was written by:
 
 Sajia Akhter, Ph.D. in the [Edwards Bioinformatics Lab](http://edwards.sdsu.edu/research/) and the [Computational Science Research Center](http://www.csrc.sdsu.edu/csrc/) at [San Diego State University](http://www.sdsu.edu/)
+and Rob Edwards, Ph.D.
 
-COPYRIGHT
-=========
+# COPYRIGHT
 
 Qudaich is Copyright 2010-2016 Sajia Akhter and Robert Edwards. It is released under the MIT License, please see the [license file](LICENSE)
 
-INSTALLATION
-============
+# INSTALLATION
 
 1.  Clone this repository using the *Clone or Download* button above.
 2.  Compile the code using the command `% make all`. This will result in two executables, *qudaich_alignment* and *qudaich_search_db*
 
 *Qudaich is written in C/C++. So it requires gcc - the GNU project C and C++ compiler - version 4.4.1 or later.*
 
-QUICK START
-===========
+# QUICK START
+
+## Search The Database
 
 Use qudaich search to find the candidate database sequences:
 
 % ./qudaich\_search\_db options
 
-Options
--------
+### Options
 
 * -query Name of the query file (Required)
 * -ref Name of database file (Required)
@@ -49,10 +47,11 @@ Options
 
 * -h Show command line options
 
-To generate the optimal alignments: % ./qudaich\_alignment options
+## Generate Alignments
 
-Options
--------
+To generate the optimal alignments use the alignment command: `% ./qudaich\_alignment` options
+
+### Options
 
 -f Options: all = generate alignments for all query sequences  
 avg (default) = generate alignments for those query  
