@@ -72,6 +72,7 @@ Output
 ------
 
 The output file of the alignment is a tab delimited file where the colums are: 
+
 1. query\_id 
 2. db\_id 
 3. query\_seq\_length 
