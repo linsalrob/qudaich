@@ -10,7 +10,7 @@ Qudaich performs local sequence alignments in two steps:
 
 Qudaich was written by:
 
-Sajia Akhter, Ph.D. Edwards Bioinformatics Lab (<http://edwards.sdsu.edu/research/>) Computational Science Research Center (<http://www.csrc.sdsu.edu/csrc/>) San Diego State University (<http://www.sdsu.edu/>)
+Sajia Akhter, Ph.D. in the [Edwards Bioinformatics Lab](http://edwards.sdsu.edu/research/) and the [Computational Science Research Center](http://www.csrc.sdsu.edu/csrc/) at [San Diego State University](http://www.sdsu.edu/)
 
 COPYRIGHT
 =========
