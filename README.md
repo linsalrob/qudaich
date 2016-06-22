@@ -29,7 +29,7 @@ Qudaich is Copyright 2010-2016 Sajia Akhter and Robert Edwards. It is released u
 
 Use qudaich search to find the candidate database sequences:
 
-% ./qudaich\_search\_db options
+```% ./qudaich\_search\_db options```
 
 ### Options
 
@@ -49,20 +49,37 @@ Use qudaich search to find the candidate database sequences:
 
 ## Generate Alignments
 
-To generate the optimal alignments use the alignment command: `% ./qudaich\_alignment` options
+To generate the optimal alignments use the alignment command: 
+
+```% ./qudaich\_alignment options```
 
 ### Options
 
--f Options: all = generate alignments for all query sequences  
-avg (default) = generate alignments for those query  
-sequences whose frequency or sum(lcp) &gt;= average of all query sequences
+* -f Options:
+	* all: generate alignments for all query sequences  
+	* avg (default): generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences
+	* an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value
 
-an integer value = generate alignments for those query  
-sequences whose frequency or sum(lcp) &gt;= given integer value
-
--freqFile Name of the frequency file (default: freq.txt; This is the output file generated from ./qudaich\_search\_db) -output Name of output file (default: output\_qudaich.txt) -match Match weight (default 1) -mismatch Mismatch penalty (default -3) -gap\_open Gap opening penalty (default -1) -gap\_ext Gap extension penalty (default -2) -h Show command line options
+* -freqFile: Name of the frequency file (default: freq.txt) This is the output file generated from `./qudaich\_search\_db`) 
+* -output: Name of output file (default: output\_qudaich.txt)
+* -match Match weight (default 1)
+* -mismatch Mismatch penalty (default -3)
+* -gap\_open Gap opening penalty (default -1)
+* -gap\_ext Gap extension penalty (default -2)
+* -h Show command line options
 
 Output
 ------
 
-The output file of the alignment is a tab delimited file where the colums are: 1. query\_id 2. db\_id 3. query\_seq\_length 4. identity (not percent identity; you can calculate %identity from colum 3 and colum 4. %identity = identity/query\_seq\_lengh\*100) 5. alignment\_length 6. \#gap 7. query start 8. query end 9. reference start 10. reference end 11. score
+The output file of the alignment is a tab delimited file where the colums are: 
+1. query\_id 
+2. db\_id 
+3. query\_seq\_length 
+4. identity (not percent identity; you can calculate %identity from colum 3 and colum 4. %identity = identity/query\_seq\_lengh\*100) 
+5. alignment\_length 
+6. \#gap 
+7. query start 
+8. query end 
+9. reference start 
+10. reference end 
+11. score
