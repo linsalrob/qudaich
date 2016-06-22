@@ -15,28 +15,39 @@ Sajia Akhter, Ph.D. Edwards Bioinformatics Lab (<http://edwards.sdsu.edu/researc
 COPYRIGHT
 =========
 
-Qudaich is Copyright 2010-2013 Sajia Akhter.
+Qudaich is Copyright 2010-2016 Sajia Akhter and Robert Edwards. It is released under the MIT License, please see the [license file](LICENSE)
 
 INSTALLATION
 ============
 
-1.  Uncompress the distribution Qudaich\_\*.zip
-2.  % make
-3.  % make -C source/
+1.  Clone this repository using the *Clone or Download* button above.
+2.  Compile the code using the command `% make all`. This will result in two executables, *qudaich_alignment* and *qudaich_search_db*
 
-*\** Qudaich is written in C/C++. So it requires gcc - GNU project C and C++ compiler - version 4.4.1 or later.
+*Qudaich is written in C/C++. So it requires gcc - the GNU project C and C++ compiler - version 4.4.1 or later.*
 
 QUICK START
 ===========
 
-To find the candidate database sequences:
+Use qudaich search to find the candidate database sequences:
 
 % ./qudaich\_search\_db options
 
 Options
 -------
 
--query Name of the query file (Required) -ref Name of database file (Required) -prog Alignment options (Required): n (nucleotide), p (protein), trn (translated nucleotide) -top Number of alignments per query sequence (default 1) -freqFile Frequency file Name (default freq.txt) -hypo Hypothesis options: 1 (default) or 2 -h Show command line options
+* -query Name of the query file (Required)
+* -ref Name of database file (Required)
+* -prog can be one of the three alignment options (Required):
+	* n (nucleotide), 
+	* p (protein), 
+	* trn (translated nucleotide) 
+* -top Number of alignments per query sequence (default 1)
+* -freqFile Frequency file Name (default freq.txt)
+* -hypo Hypothesis options:
+	* 1 (default) or
+	* 2
+
+* -h Show command line options
 
 To generate the optimal alignments: % ./qudaich\_alignment options
 
