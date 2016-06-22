@@ -73,12 +73,12 @@ Output
 
 The output file of the alignment is a tab delimited file where the colums are: 
 
-1. query\_id 
-2. db\_id 
-3. query\_seq\_length 
-4. identity (not percent identity; you can calculate %identity from colum 3 and colum 4. %identity = identity/query\_seq\_lengh\*100) 
-5. alignment\_length 
-6. \#gap 
+1. query id 
+2. database id 
+3. query sequence length 
+4. identity (not percent identity; you can calculate %identity from column 3 and column 4: %identity = identity/query sequence length * 100) 
+5. alignment length 
+6. number of gaps
 7. query start 
 8. query end 
 9. reference start 
