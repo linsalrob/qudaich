@@ -28,6 +28,8 @@
 *.out
 *.app
 bin/
+qudaich_alignment
+qudaich_search_db
 
 # An old version ... you should not see this
 v1
