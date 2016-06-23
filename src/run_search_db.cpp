@@ -22,13 +22,33 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <limits.h> /* required for MAX_PATH */
+
 
 int TOTAL_DB_SEQ = 0, TOTAL_QRY_SEQ = 0, LINE_LEN, SIZE_SEQ = 0, SIZE_SEQ_NAME = 0;
+char mypath[PATH_MAX];
 
 void inputError(const char *msg) {
   fprintf(stderr, "%s", msg);
   exit(-1);
 }
+
+
+/* return the path of the current executable so we can append bin to it
+ * arg: exec is argv[0]
+ * returns: a string representing the current path
+ *
+ * Uses realpath in stdlib.h and MAX_PATH in limits.h
+ */
+char *execpath(char *exec) {
+	char *mp = realpath(exec, mypath); /*  this is the complete path */
+	char *ptr = strrchr(mp, '/'); /* this is from the last / forwards - should be path separator! */
+	int posn = strlen(mp) - strlen(ptr); /* the position of the last / */
+	mypath[posn] = '\0';
+	return mypath;
+}
+
+
 
 int input_size(FILE *f, int flag)
 {
@@ -172,6 +192,13 @@ int main(int argc, char **argv) {
   SIZE_SEQ_NAME++;
   sprintf(write_buff,"%d %d %d %d %d", TOTAL_DB_SEQ, TOTAL_QRY_SEQ, LINE_LEN, SIZE_SEQ, SIZE_SEQ_NAME);
 
+  char *app_path;
+  if ((app_path = execpath(argv[0])) == NULL) {
+	  fprintf(stderr, "ERROR: We can not get an application path from %s\n", argv[0]);
+	  exit(-1);
+  }
+  
+
   
   if (strcmp(program,"n")==0)
   {
@@ -184,16 +211,16 @@ int main(int argc, char **argv) {
 	if(hypothesis == 1)
 	{ 
 		if(top == 1)
-			sprintf(progBuf, "bin/search_dna_hypo1 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+			sprintf(progBuf, "%s/bin/search_dna_hypo1 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
 		else	
-			sprintf(progBuf, "bin/search_dna_hypo1_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+			sprintf(progBuf, "%s/bin/search_dna_hypo1_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
 	}
 	else
 	{
 	        if(top == 1)
-                        sprintf(progBuf, "bin/search_dna_hypo2 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_dna_hypo2 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_dna_hypo2_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_dna_hypo2_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
 	}
   }
   else if (strcmp(program,"p")==0)
@@ -206,16 +233,16 @@ int main(int argc, char **argv) {
 	if(hypothesis == 1)
         { 
                 if(top == 1)
-                        sprintf(progBuf, "bin/search_pro_hypo1 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_pro_hypo1 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_pro_hypo1_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_pro_hypo1_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
         }
         else
         {
                 if(top == 1)
-                        sprintf(progBuf, "bin/search_pro_hypo2 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_pro_hypo2 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_pro_hypo2_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_pro_hypo2_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
         }
   }
   else if (strcmp(program,"trn")==0)
@@ -228,16 +255,16 @@ int main(int argc, char **argv) {
 	if(hypothesis == 1)
         {
                 if(top == 1)
-                        sprintf(progBuf, "bin/search_trn_hypo1 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo1 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_trn_hypo1_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo1_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
         }
         else
         {
                 if(top == 1)
-                        sprintf(progBuf, "bin/search_trn_hypo2 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo2 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_trn_hypo2_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo2_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
         }
   }
 
@@ -251,16 +278,16 @@ int main(int argc, char **argv) {
         }
         if(hypothesis == 1)
         {
-                        sprintf(progBuf, "bin/search_trnx_hypo1_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trnx_hypo1_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
         }
         else
         {
 		printf("Current version of Quadich supports only hypothesis I for translated nucleotide vs protein database alignmnet.\n\n");
                 inputError("");
                 /*if(top == 1)
-                        sprintf(progBuf, "bin/search_trn_hypo2 %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo2 %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
                 else
-                        sprintf(progBuf, "bin/search_trn_hypo2_top %s %s %s %d %d %s", refFile, queryFile, outputfile, SIZE, top, write_buff);
+                        sprintf(progBuf, "%s/bin/search_trn_hypo2_top %s %s %s %d %d %s", app_path, refFile, queryFile, outputfile, SIZE, top, write_buff);
       
 	*/
         }

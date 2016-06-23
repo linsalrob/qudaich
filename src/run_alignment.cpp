@@ -23,11 +23,44 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <limits.h> /* required for MAX_PATH */
+
+char mypath[PATH_MAX];
+
 
 void inputError(const char *msg) {
   fprintf(stderr, "%s", msg);
   exit(-1);
 }
+
+/* return the path of the current executable so we can append bin to it
+ * arg: exec is argv[0]
+ * returns: a string representing the current path
+ *
+ * Uses realpath in stdlib.h and MAX_PATH in limits.h
+ */
+char *execpath(char *exec) {
+	char *mp = realpath(exec, mypath); /*  this is the complete path */
+	char *ptr = strrchr(mp, '/'); /* this is from the last / forwards - should be path separator! */
+	int posn = strlen(mp) - strlen(ptr); /* the position of the last / */
+	mypath[posn] = '\0';
+	return mypath;
+}
+
+void help() {
+      printf("-f                           Options: all = generate alignments for all query sequences\n");
+      printf("                                      avg (default) = generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences\n");
+      printf("                                      an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value\n");
+      printf("-freqFile                    Name of the frequency file\n");
+      printf("-output                      Name of output file\n");
+      printf("-match                       Match weight (default 1)\n");
+      printf("-mismatch                    Mismatch penalty (default -3)\n");
+      printf("-gap_open                    Gap opening penalty (default -1)\n");
+      printf("-gap_ext                     Gap extension penalty (default -2)\n");
+      printf("-h                           Show command line options\n");
+      exit(0);
+}
+
 
 int main(int argc, char **argv) {
 
@@ -37,6 +70,8 @@ int main(int argc, char **argv) {
 
   FILE *f;
   
+  if (argc == 1) 
+	  help();
 
   for(int i=1;i<argc;i++) {
    
@@ -99,23 +134,15 @@ int main(int argc, char **argv) {
       i++;
     }
 
-    else if(!strcmp(argv[i], "-h")) {
-      printf("-f                           Options: all = generate alignments for all query sequences\n");
-      printf("                                      avg (default) = generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences\n");
-      printf("                                      an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value\n");
-      printf("-freqFile                    Name of the frequency file\n");
-      printf("-output                      Name of output file\n");
-      printf("-match                       Match weight (default 1)\n");
-      printf("-mismatch                    Mismatch penalty (default -3)\n");
-      printf("-gap_open                    Gap opening penalty (default -1)\n");
-      printf("-gap_ext                     Gap extension penalty (default -2)\n");
-      printf("-h                           Show command line options\n");
-      exit(0);
-    }
+    else if(!strcmp(argv[i], "-h"))
+	    help();
     else {
       inputError("Invalid arguments\n");
     }
   }
+
+
+
   
   f = fopen(freqFile,"r");
   if( f == NULL ) {
@@ -132,32 +159,39 @@ int main(int argc, char **argv) {
 	fclose(f);
   }
   
+  char *app_path;
+  if ((app_path = execpath(argv[0])) == NULL) {
+	  fprintf(stderr, "ERROR: We can not get an application path from %s\n", argv[0]);
+	  exit(-1);
+  }
+  
+  
   char progBuf[1024];
   
   if (strcmp(program,"n")==0)
   {
 	if(top == 1)
-		sprintf(progBuf, "bin/align_dna %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+		sprintf(progBuf, "%s/bin/align_dna %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
 	else	
-		sprintf(progBuf, "bin/align_dna_top %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+		sprintf(progBuf, "%s/bin/align_dna_top %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
   }
   else if (strcmp(program,"p")==0)
   {
         if(top == 1)
-                sprintf(progBuf, "bin/align_pro %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+                sprintf(progBuf, "%s/bin/align_pro %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
         else
-                sprintf(progBuf, "bin/align_pro_top %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+                sprintf(progBuf, "%s/bin/align_pro_top %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
   }
   else if (strcmp(program,"trn")==0)
   {
                 if(top == 1)
-                        sprintf(progBuf, "bin/align_trn %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+                        sprintf(progBuf, "%s/bin/align_trn %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
                 else
-                        sprintf(progBuf, "bin/align_trn_top %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+                        sprintf(progBuf, "%s/bin/align_trn_top %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
   }
   else if (strcmp(program,"trnx")==0)
   {
-                sprintf(progBuf, "bin/align_trnx_top %s %s %d %d %d %d %s", freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
+                sprintf(progBuf, "%s/bin/align_trnx_top %s %s %d %d %d %d %s", app_path, freqFile, outputfile, MATCH_WT, MISMATCH_WT, GAP_OPENING_COST, GAP_EXTENSION_COST, fvalue);
   }
   else{
 	inputError("Something happend in previous step\n");
