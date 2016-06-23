@@ -111,13 +111,13 @@ int main(int argc, char **argv) {
       strcpy(outputfile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-hypo")) {
+    else if(!strcmp(argv[i], "-hypo") || !strcmp(argv[i], "-heuristic")) {
       if(i+1 >= argc) {
         inputError("Argument required\n");
       }
       sscanf(argv[i+1], "%d", &hypothesis);
       if(hypothesis <= 0 || hypothesis >=3) {
-        inputError("Value of hypothesis must be either 1 (default) or 2\n");
+        inputError("Value of the heuristic must be either 1 (default) or 2\n");
       }
       i++;
     }
@@ -140,7 +140,7 @@ int main(int argc, char **argv) {
       printf("                                                           trnx (translated nucleotide vs protein database)\n");
       printf("-top                        Number of alignments per query sequence (default 1)\n");
       printf("-freqFile                   Frequency file Name\n");
-      printf("-hypo                       Hypothesis options: 1 (default) or 2 \n");
+      printf("-heuristic                  Heuristic options: 1 (default) or 2 (See the README or paper for more information)\n");
       printf("-h                          Show command line options\n");
       exit(0);
     }
