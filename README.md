@@ -29,7 +29,7 @@ Qudaich is Copyright 2010-2016 Sajia Akhter and Robert Edwards. It is released u
 
 Use qudaich search to find the candidate database sequences:
 
-```% ./qudaich\_search\_db options```
+```% ./qudaich_search_db options```
 
 ### Options
 
@@ -41,8 +41,8 @@ Use qudaich search to find the candidate database sequences:
 	* trn (translated nucleotide) 
 * -top Number of alignments per query sequence (default 1)
 * -freqFile Frequency file Name (default freq.txt)
-* -hypo Hypothesis options:
-	* 1 (default) or
+* -hypo heuristic (hypothesis) options (see below)
+	* 1 (default)  or
 	* 2
 
 * -h Show command line options
@@ -51,7 +51,7 @@ Use qudaich search to find the candidate database sequences:
 
 To generate the optimal alignments use the alignment command: 
 
-```% ./qudaich\_alignment options```
+```% ./qudaich_alignment options```
 
 ### Options
 
@@ -60,7 +60,7 @@ To generate the optimal alignments use the alignment command:
 	* avg (default): generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences
 	* an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value
 
-* -freqFile: Name of the frequency file (default: freq.txt) This is the output file generated from `./qudaich\_search\_db`) 
+* -freqFile: Name of the frequency file (default: freq.txt) This is the output file generated from `./qudaich_search_db`) 
 * -output: Name of output file (default: output\_qudaich.txt)
 * -match Match weight (default 1)
 * -mismatch Mismatch penalty (default -3)
@@ -68,8 +68,8 @@ To generate the optimal alignments use the alignment command:
 * -gap\_ext Gap extension penalty (default -2)
 * -h Show command line options
 
-Output
-------
+# Output
+
 
 The output file of the alignment is a tab delimited file where the colums are: 
 
@@ -84,3 +84,21 @@ The output file of the alignment is a tab delimited file where the colums are:
 9. reference start 
 10. reference end 
 11. score
+
+
+# Heuristic Options
+
+There are two different heuristics that we have developed with qudaich, and you can select them using the -hypo option. The heuristics are:
+Heuristic I: Query *q* has the best alignment with database sequence *d* if the suffixes of *d* are the most frequent closest suffixes in all the query groups containing all the suffixes of *q*.
+Heuristic II: Query *q* has the best alignment with database sequence *d*, if heuristic I satisfies and sigma(lcp(suffixes of *q*, suffixes of *d*)) is maximal.
+
+
+The first heuristic relies on the assertion that if *q* has the best alignment with *d*, the number of common prefix matches (of length at least one) between the suffixes of *q* and the corresponding suffixes of *d* will be the maximum among the number of the common prefix match between the suffixes of *q* and the suffixes of any other database sequence. Since all the suffixes are lexicographically sorted in the suffix array, in most of the cases suffixes of *d* (that have some match with suffixes of *q*) will be either *topDB* or *bottomDB* matches of the query groups containing the corresponding suffixes of *q*.
+
+
+The second heuristic uses a weighted frequency. Instead of only counting the presence of the DB suffix in *topDB* and *bottomDB*, the longest common prefix (lcp) between the query suffix and the DB suffix is also measured. 
+
+For more information about the choices, see [our paper](http://edwards.sdsu.edu/)
+
+
+
