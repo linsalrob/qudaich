@@ -41,7 +41,7 @@ Use qudaich search to find the candidate database sequences:
 	* trn (translated nucleotide) 
 * -top Number of alignments per query sequence (default 1)
 * -freqFile Frequency file Name (default freq.txt)
-* -hypo heuristic (hypothesis) options (see below)
+* -heuristic heuristic options (see below)
 	* 1 (default)  or
 	* 2
 
@@ -88,7 +88,7 @@ The output file of the alignment is a tab delimited file where the colums are:
 
 # Heuristic Options
 
-There are two different heuristics that we have developed with qudaich, and you can select them using the -hypo option. The heuristics are:
+There are two different heuristics that we have developed with qudaich, and you can select them using the -heuristic option. The heuristics are:
 Heuristic I: Query *q* has the best alignment with database sequence *d* if the suffixes of *d* are the most frequent closest suffixes in all the query groups containing all the suffixes of *q*.
 Heuristic II: Query *q* has the best alignment with database sequence *d*, if heuristic I satisfies and sigma(lcp(suffixes of *q*, suffixes of *d*)) is maximal.
 
