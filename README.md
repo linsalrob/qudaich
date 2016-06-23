@@ -33,15 +33,15 @@ Use qudaich search to find the candidate database sequences:
 
 ### Options
 
-* -query Name of the query file (Required)
-* -ref Name of database file (Required)
-* -prog can be one of the three alignment options (Required):
+* -query      Name of the query file (Required)
+* -db         Name of database file (Required)
+* -prog       [choice] can be one of the three alignment options (Required):
 	* n (nucleotide), 
 	* p (protein), 
 	* trn (translated nucleotide) 
-* -top Number of alignments per query sequence (default 1)
-* -freqFile Frequency file Name (default freq.txt)
-* -heuristic heuristic options (see below)
+* -top        Number of alignments per query sequence (default 1)
+* -freqFile   Frequency file Name (default freq.txt)
+* -heuristic  heuristic options (see below)
 	* 1 (default)  or
 	* 2
 

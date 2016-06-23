@@ -87,7 +87,7 @@ int main(int argc, char **argv) {
       strcpy(queryFile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-ref")) {
+    else if(!strcmp(argv[i], "-ref") || !strcmp(argv[i], "-db")) {
       if(i+1 >= argc) {
 	inputError("Database File name required\n");
       }
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     }
     else if(!strcmp(argv[i], "-h")) {
       printf("-query                      Name of the query file (Required)\n");
-      printf("-ref                        Name of database file (Required)\n");
+      printf("-db                         Name of database file (Required)\n");
       printf("-prog                       Alignment options (Required):  n (nucleotide),\n"); 
       printf("                                                           p (protein),\n");
       printf("                                                           trn (translated nucleotide)\n");
@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
   }
     
   if(!queryFile[0] || !refFile[0] || !program[0]) {
-    inputError("Both the QueryFile (-query) and the RefFile (-ref) names are required\nAlso, you need to choose a program to run (-prog).\n\nPlease use -h for the options or see the README.txt file.\n");
+    inputError("Both the QueryFile (-query) and the database (-db) names are required\nAlso, you need to choose a program to run (-prog).\n\nPlease use -h for the options or see the README.txt file.\n");
   }
 
   // CHECK whether these are valid files
@@ -171,6 +171,7 @@ int main(int argc, char **argv) {
   SIZE_SEQ++;
   SIZE_SEQ_NAME++;
   sprintf(write_buff,"%d %d %d %d %d", TOTAL_DB_SEQ, TOTAL_QRY_SEQ, LINE_LEN, SIZE_SEQ, SIZE_SEQ_NAME);
+
   
   if (strcmp(program,"n")==0)
   {
