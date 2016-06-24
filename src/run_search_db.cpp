@@ -25,8 +25,14 @@
 #include <limits.h> /* required for MAX_PATH */
 
 
+void version(char *);
+char *execpath(char *);
+void inputError(const char *);
+void help(char *);
+
 int TOTAL_DB_SEQ = 0, TOTAL_QRY_SEQ = 0, LINE_LEN, SIZE_SEQ = 0, SIZE_SEQ_NAME = 0;
 char mypath[PATH_MAX];
+
 
 void inputError(const char *msg) {
   fprintf(stderr, "%s", msg);
@@ -48,6 +54,19 @@ char *execpath(char *exec) {
 	return mypath;
 }
 
+/* print out the version number and then the help menu. Note that we require argv[0] so we can pass it forward */
+void version(char *p) {
+	FILE * fp;
+	char v[256];
+	fp = fopen("VERSION", "r");
+	if (fp != NULL) {
+		char *check_fgets = fgets(v, 256, fp);
+	}
+	printf("\n%s %s\n", p, v);
+	help(p);
+}
+
+
 
 /* help() prints the help menu and exits. Please provide argv[0] as an option so we can include that in the help menu */
 void help(char * p) {
@@ -61,7 +80,8 @@ void help(char * p) {
       printf("-t|-top                        Number of alignments per query sequence (default 1)\n");
       printf("-f|-freqFile                   Frequency file Name\n");
       printf("-c|-heuristic                  Heuristic options: 1 (default) or 2 (See the README or paper for more information)\n");
-      printf("-h|-help                       Show command line options\n");
+      printf("-h|-help                       Show command line options and exit\n");
+      printf("-v|-version                    Print the version and help options and exit\n");
       exit(0);
 }
 
@@ -170,6 +190,8 @@ int main(int argc, char **argv) {
     }
     else if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help"))
 	    help(argv[0]);
+    else if (!strcmp(argv[i], "-version") || !strcmp(argv[i], "-v"))
+	    version(argv[0]);
     else {
       inputError("Invalid arguments\n");
       inputError(argv[i]);	

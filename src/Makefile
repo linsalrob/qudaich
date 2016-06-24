@@ -2,7 +2,7 @@
 
 CC = gcc
 CPP = g++
-CFLAGS = -c -O3 -Wall -Wno-char-subscripts -Wno-unused-but-set-variable -Wno-maybe-uninitialized -Wno-unused-variable
+CFLAGS = -c -O3 -Wall -Wno-char-subscripts -Wno-unused-but-set-variable -Wno-maybe-uninitialized -Wno-unused-variable -Wno-unused-variable
 LFLAGS = -O3
 ##CFLAGS = -c -pg -O3 -Wall
 ##LFLAGS = -pg -O3 -Wall

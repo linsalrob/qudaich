@@ -33,19 +33,20 @@ Use qudaich search to find the candidate database sequences:
 
 ### Options
 
-* -query      Name of the query file (Required)
-* -db         Name of database file (Required)
-* -prog       [choice] can be one of the three alignment options (Required):
+* -q|-query      Name of the query file (Required)
+* -d|-db         Name of database file (Required)
+* -p|-prog       [choice] can be one of the three alignment options (Required):
 	* n (nucleotide), 
 	* p (protein), 
 	* trn (translated nucleotide) 
-* -top        Number of alignments per query sequence (default 1)
-* -freqFile   Frequency file Name (default freq.txt)
-* -heuristic  heuristic options (see below)
+* -t|-top        Number of alignments per query sequence (default 1)
+* -f|-freqFile   Frequency file Name (default freq.txt)
+* -c|-heuristic  heuristic options (see below)
 	* 1 (default)  or
 	* 2
 
-* -h Show command line options
+* -h|-help Show command line options
+* -v|-version print version and help menu and exit
 
 ## Generate Alignments
 
@@ -55,18 +56,19 @@ To generate the optimal alignments use the alignment command:
 
 ### Options
 
-* -f Options:
+* -a|-alignment Options:
 	* all: generate alignments for all query sequences  
 	* avg (default): generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences
 	* an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value
 
-* -freqFile: Name of the frequency file (default: freq.txt) This is the output file generated from `./qudaich_search_db`) 
-* -output: Name of output file (default: output\_qudaich.txt)
-* -match Match weight (default 1)
-* -mismatch Mismatch penalty (default -3)
-* -gap\_open Gap opening penalty (default -1)
-* -gap\_ext Gap extension penalty (default -2)
-* -h Show command line options
+* -f|-freqFile: Name of the frequency file (default: freq.txt) This is the output file generated from `./qudaich_search_db`) 
+* -o|-output: Name of output file (default: output\_qudaich.txt)
+* -m|-match Match weight (default 1)
+* -s|-mismatch Mismatch penalty (default -3)
+* -g|-gap\_open Gap opening penalty (default -1)
+* -x|-gap\_ext Gap extension penalty (default -2)
+* -h|-help Show command line options
+* -v|-version print version and help menu and exit
 
 # Output
 

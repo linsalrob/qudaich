@@ -27,6 +27,23 @@
 
 char mypath[PATH_MAX];
 
+void version(char *);
+char *execpath(char *);
+void inputError(const char *);
+void help(char *);
+
+
+/* print out the version number and then the help menu. Note that we require argv[0] so we can pass it forward */
+void version(char *p) {
+	FILE * fp;
+	char v[256];
+	fp = fopen("VERSION", "r");
+	if (fp != NULL) {
+		char *check_fgets = fgets(v, 256, fp);
+	}
+	printf("\n%s %s\n", p, v);
+	help(p);
+}
 
 void inputError(const char *msg) {
   fprintf(stderr, "%s", msg);
@@ -58,7 +75,8 @@ void help(char *p) {
       printf("-s|-mismatch                    Mismatch penalty (default -3)\n");
       printf("-g|-gap_open                    Gap opening penalty (default -1)\n");
       printf("-x|-gap_ext                     Gap extension penalty (default -2)\n");
-      printf("-h|-help                        Show command line options\n");
+      printf("-h|-help                        Show command line options and exit\n");
+      printf("-v|-version                     Print the version and help options and exit\n");
       exit(0);
 }
 
@@ -134,6 +152,8 @@ int main(int argc, char **argv) {
       sscanf(argv[i+1], "%d", &GAP_EXTENSION_COST);
       i++;
     }
+    else if (!strcmp(argv[i], "-version") || !strcmp(argv[i], "-v"))
+	    version(argv[0]);
     else {
       help(argv[0]);
     }
