@@ -47,17 +47,18 @@ char *execpath(char *exec) {
 	return mypath;
 }
 
-void help() {
-      printf("-f                           Options: all = generate alignments for all query sequences\n");
+void help(char *p) {
+      printf("\n%s [options] -f [frequency file] or\n%s [options] -freqFile [frequency file]\n\n", p, p);
+      printf("-a|-alignment                   Options: all = generate alignments for all query sequences\n");
       printf("                                      avg (default) = generate alignments for those query sequences whose frequency or sum(lcp) >= average of all query sequences\n");
       printf("                                      an integer value = generate alignments for those query sequences whose frequency or sum(lcp) >= given integer value\n");
-      printf("-freqFile                    Name of the frequency file\n");
-      printf("-output                      Name of output file\n");
-      printf("-match                       Match weight (default 1)\n");
-      printf("-mismatch                    Mismatch penalty (default -3)\n");
-      printf("-gap_open                    Gap opening penalty (default -1)\n");
-      printf("-gap_ext                     Gap extension penalty (default -2)\n");
-      printf("-h                           Show command line options\n");
+      printf("-f|-freqFile                    Name of the frequency file\n");
+      printf("-o|-output                      Name of output file\n");
+      printf("-m|-match                       Match weight (default 1)\n");
+      printf("-s|-mismatch                    Mismatch penalty (default -3)\n");
+      printf("-g|-gap_open                    Gap opening penalty (default -1)\n");
+      printf("-x|-gap_ext                     Gap extension penalty (default -2)\n");
+      printf("-h|-help                        Show command line options\n");
       exit(0);
 }
 
@@ -71,13 +72,13 @@ int main(int argc, char **argv) {
   FILE *f;
   
   if (argc == 1) 
-	  help();
+	  help(argv[0]);
 
   for(int i=1;i<argc;i++) {
    
-    if(!strcmp(argv[i], "-f")) {
+    if(!strcmp(argv[i], "-a") || !strcmp(argv[i], "-alignment")) {
       if(i+1 >= argc) {
-        inputError("Accepted argument for -f is: avg, all or a INT value\n");
+        inputError("Accepted argument for -a is: avg, all or a INT value\n");
       }
       strcpy(fvalue, argv[i+1]);
       if( strcmp(fvalue,"avg") != 0 and strcmp(fvalue,"all") != 0)
@@ -85,59 +86,56 @@ int main(int argc, char **argv) {
 		for (unsigned j = 0; j< strlen(fvalue);j++)
 		{
 			if(isdigit(fvalue[j]))	continue;
-			else inputError("Accepted argument for -f is: avg, all or a INT value\n");
+			else inputError("Accepted argument for -f is: avg, all or an INT value\n");
 		}
 	}
       i++;
     }
 
-    else if(!strcmp(argv[i], "-freqFile")) {
+    else if(!strcmp(argv[i], "-freqFile") || !strcmp(argv[i], "-f")) {
       if(i+1 >= argc) {
 	inputError("Frequency File name required\n");
       }
       strcpy(freqFile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-output")) {
+    else if(!strcmp(argv[i], "-output") || !strcmp(argv[i], "-o")) {
       if(i+1 >= argc) {
         inputError("Output File name required\n");
       }
       strcpy(outputfile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-match")) {
+    else if(!strcmp(argv[i], "-match") || !strcmp(argv[i], "-m")) {
       if(i+1 >= argc) {
 	inputError("Argument required\n");
       }
       sscanf(argv[i+1], "%d", &MATCH_WT);
       i++;
     }
-    else if(!strcmp(argv[i], "-mismatch")) {
+    else if(!strcmp(argv[i], "-mismatch") || !strcmp(argv[i], "-s")) {
       if(i+1 >= argc) {
         inputError("Argument required\n");
       }
       sscanf(argv[i+1], "%d", &MISMATCH_WT);
       i++;
     }
-    else if(!strcmp(argv[i], "-gap_open")) {
+    else if(!strcmp(argv[i], "-gap_open") || !strcmp(argv[i], "-g")) {
       if(i+1 >= argc) {
         inputError("Argument required\n");
       }
       sscanf(argv[i+1], "%d", &GAP_OPENING_COST);
       i++;
     }
-    else if(!strcmp(argv[i], "-gap_ext")) {
+    else if(!strcmp(argv[i], "-gap_ext") || !strcmp(argv[i], "-x")) {
       if(i+1 >= argc) {
         inputError("Argument required\n");
       }
       sscanf(argv[i+1], "%d", &GAP_EXTENSION_COST);
       i++;
     }
-
-    else if(!strcmp(argv[i], "-h"))
-	    help();
     else {
-      inputError("Invalid arguments\n");
+      help(argv[0]);
     }
   }
 

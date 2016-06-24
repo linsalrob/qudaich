@@ -49,6 +49,23 @@ char *execpath(char *exec) {
 }
 
 
+/* help() prints the help menu and exits. Please provide argv[0] as an option so we can include that in the help menu */
+void help(char * p) {
+      printf("\n%s -q [query] -d [database] -p [program] or\n%s -query [query file] -db [database file] -prog [program]\n\n", p, p);
+      printf("-q|-query                      Name of the query file (Required)\n");
+      printf("-d|-db                         Name of database file (Required)\n");
+      printf("-p|-prog                       Alignment options (Required):  n (nucleotide),\n"); 
+      printf("                                                           p (protein),\n");
+      printf("                                                           trn (translated nucleotide)\n");
+      printf("                                                           trnx (translated nucleotide vs protein database)\n");
+      printf("-t|-top                        Number of alignments per query sequence (default 1)\n");
+      printf("-f|-freqFile                   Frequency file Name\n");
+      printf("-c|-heuristic                  Heuristic options: 1 (default) or 2 (See the README or paper for more information)\n");
+      printf("-h|-help                       Show command line options\n");
+      exit(0);
+}
+
+
 
 int input_size(FILE *f, int flag)
 {
@@ -100,21 +117,21 @@ int main(int argc, char **argv) {
   strcpy(outputfile, "freq.txt");
   
   for(i=1;i<argc;i++) {
-    if(!strcmp(argv[i], "-query")) {
+    if(!strcmp(argv[i], "-query") || !strcmp(argv[i], "-q")) {
       if(i+1 >= argc) {
 	inputError("Query File name required\n");
       }
       strcpy(queryFile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-ref") || !strcmp(argv[i], "-db")) {
+    else if(!strcmp(argv[i], "-ref") || !strcmp(argv[i], "-db") || !strcmp(argv[i], "-d")) {
       if(i+1 >= argc) {
 	inputError("Database File name required\n");
       }
       strcpy(refFile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-prog")) {
+    else if(!strcmp(argv[i], "-prog") || !strcmp(argv[i], "-p")) {
       if(i+1 >= argc) {
         inputError("Alignment option required\n");
       }
@@ -124,14 +141,14 @@ int main(int argc, char **argv) {
       i++;
     }
 
-    else if(!strcmp(argv[i], "-freqFile")) {
+    else if(!strcmp(argv[i], "-freqFile") || !strcmp(argv[i], "-f")) {
       if(i+1 >= argc) {
         inputError("Frequency File name required\n");
       }
       strcpy(outputfile, argv[i+1]);
       i++;
     }
-    else if(!strcmp(argv[i], "-hypo") || !strcmp(argv[i], "-heuristic")) {
+    else if(!strcmp(argv[i], "-hypo") || !strcmp(argv[i], "-heuristic") || !strcmp(argv[i], "-c")) {
       if(i+1 >= argc) {
         inputError("Argument required\n");
       }
@@ -151,19 +168,8 @@ int main(int argc, char **argv) {
       }
       i++;
     }
-    else if(!strcmp(argv[i], "-h")) {
-      printf("-query                      Name of the query file (Required)\n");
-      printf("-db                         Name of database file (Required)\n");
-      printf("-prog                       Alignment options (Required):  n (nucleotide),\n"); 
-      printf("                                                           p (protein),\n");
-      printf("                                                           trn (translated nucleotide)\n");
-      printf("                                                           trnx (translated nucleotide vs protein database)\n");
-      printf("-top                        Number of alignments per query sequence (default 1)\n");
-      printf("-freqFile                   Frequency file Name\n");
-      printf("-heuristic                  Heuristic options: 1 (default) or 2 (See the README or paper for more information)\n");
-      printf("-h                          Show command line options\n");
-      exit(0);
-    }
+    else if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "-help"))
+	    help(argv[0]);
     else {
       inputError("Invalid arguments\n");
       inputError(argv[i]);	
@@ -171,7 +177,7 @@ int main(int argc, char **argv) {
   }
     
   if(!queryFile[0] || !refFile[0] || !program[0]) {
-    inputError("Both the QueryFile (-query) and the database (-db) names are required\nAlso, you need to choose a program to run (-prog).\n\nPlease use -h for the options or see the README.txt file.\n");
+    help(argv[0]);
   }
 
   // CHECK whether these are valid files
