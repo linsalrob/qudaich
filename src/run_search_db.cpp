@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
       }
       i++;
     }
-    else if(!strcmp(argv[i], "-top") || (!strcmp(argv[i], "-t")) {
+    else if(!strcmp(argv[i], "-top") || !strcmp(argv[i], "-t")) {
       if(i+1 >= argc) {
 	inputError("Argument required\n");
       }
